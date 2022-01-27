@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "group",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "dueDate": {
+      "type": "string"
+    }
+  },
+  "anyOf": [{
+    "properties": {
+        "name": {
+            "$ref": "#/definitions/nonEmptyString"
+        }
+    }
+  }],
+  "definitions": {
+    "nonEmptyString": {
+        "type": "string",
+        "minLength": 1
+    }
+  },
+  "minProperties": 2,
+  "required": [
+    "name",
+    "dueDate"
+  ],
+  "additionalProperties": false
+}
