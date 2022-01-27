@@ -6,7 +6,13 @@
     "name": {
       "type": "string"
     },
-    "dueDate": {
+    "location": {
+      "type": "string"
+    },
+    "architect": {
+      "type": "string"
+    },
+    "entryDate": {
       "type": "string"
     }
   },
@@ -23,10 +29,12 @@
         "minLength": 1
     }
   },
-  "minProperties": 2,
+  "minProperties": 4,
   "required": [
     "name",
-    "dueDate"
+    "location",
+    "architect",
+    "entryDate"
   ],
   "additionalProperties": false
 }

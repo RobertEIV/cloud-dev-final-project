@@ -1,7 +1,7 @@
 # TODO: Change the name of the org 
 org: roberteiv
-app: serverless-todo-app
-service: serverless-todo-app
+app: serverless-entry-app
+service: serverless-entry-app
 
 plugins:
   - serverless-webpack
@@ -23,9 +23,9 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_TABLE: Entries-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}-9120-1078-4091
+    ATTACHMENT_S3_BUCKET: serverless-c4-entry-images-${self:provider.stage}-9120-1078-4091
     SIGNED_URL_EXPIRATION: 300
 
   logs:
@@ -49,12 +49,12 @@ functions:
 
   #  Configure this function - 
   # Provide iamRoleStatements property for performing Actions on DynamoDB
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetEntries:
+    handler: src/lambda/http/getEntries.handler
     events:
       - http:
           method: get
-          path: todos
+          path: entries
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
@@ -69,17 +69,17 @@ functions:
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 
   # To refer to an AWS resource defined in the "Resources" section, you can use "Resource: !GetAtt <resource-name>.Arn"
   # To validate incoming HTTP requests, we have provided the request schemas in function definition below. 
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreateEntry:
+    handler: src/lambda/http/createEntry.handler
     events:
       - http:
           method: post
-          path: todos
+          path: entries
           cors: true
           authorizer: Auth
           request:
             schemas:
-              application/json: ${file(models/create-todo-model.json)}
+              application/json: ${file(models/create-entry-model.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -89,17 +89,17 @@ functions:
 
   # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements, and request schemas
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  UpdateEntry:
+    handler: src/lambda/http/updateEntry.handler
     events:
       - http:
           method: patch
-          path: todos/{todoId}
+          path: entries/{entryId}
           cors: true
           authorizer: Auth
           request:
             schemas:
-              application/json: ${file(models/update-todo-model.json)}
+              application/json: ${file(models/update-entry-model.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -109,12 +109,12 @@ functions:
 
   # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  DeleteEntry:
+    handler: src/lambda/http/deleteEntry.handler
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: entries/{entryId}
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
@@ -131,7 +131,7 @@ functions:
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: entries/{entryId}/attachment
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
@@ -164,13 +164,13 @@ resources:
           Ref: ApiGatewayRestApi
     
     # TODO: Create a DynamoDB table with local secondary index and a composite key
-    TodosTable:
+    EntriesTable:
       Type: AWS::DynamoDB::Table
       Properties:
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
         AttributeDefinitions:
-          - AttributeName: todoId
+          - AttributeName: entryId
             AttributeType: S
           - AttributeName: userId
             AttributeType: S
@@ -179,7 +179,7 @@ resources:
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: todoId
+          - AttributeName: entryId
             KeyType: RANGE
         LocalSecondaryIndexes:
         - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
@@ -218,7 +218,7 @@ resources:
       Type: AWS::S3::BucketPolicy
       Properties:
         PolicyDocument:
-          Id: TodoPolicy
+          Id: EntryPolicy
           Version: "2012-10-17"
           Statement:
           - Sid: PublicReadForGetBucketObjects

@@ -6,7 +6,7 @@
     "name": {
       "type": "string"
     },
-    "dueDate": {
+    "entryDate": {
       "type": "string"
     },
     "done": {
@@ -15,7 +15,7 @@
   },
   "required": [
     "name",
-    "dueDate",
+    "entryDate",
     "done"
   ],
   "additionalProperties": false
