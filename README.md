@@ -14,6 +14,8 @@ The application should store entry items, and each entry item contains the follo
 * `createdAt` (string) - date and time when an item was created
 * `name` (string) - name of an entry item (e.g. "Tower of The Winds")
 * `entryDate` (string) - date and time by which an item is uploaded/last edited
+* `location` (string) - location of the architectural project
+*  `architect` (string) - architect(s)/creator(s) of the project
 * `done` (boolean) - true if an entry was visted, false otherwise
 * `attachmentUrl` (string) (optional) - a URL pointing to an image attached to an entry item
 
