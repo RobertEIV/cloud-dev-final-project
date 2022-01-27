@@ -66,12 +66,6 @@ export default class App extends Component<AppProps, AppState> {
     )
   }
 
-  insertImage() {
-    return(
-      <img src={require("./images/import-collection-1.png")} alt="" />
-    )
-  }
-
   logInLogOutButton() {
     if (this.props.auth.isAuthenticated()) {
       return (
