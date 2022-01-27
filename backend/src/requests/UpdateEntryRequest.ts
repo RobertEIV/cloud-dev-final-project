@@ -1,8 +1,8 @@
 /**
  * Fields in a request to update a single TODO item.
  */
-export interface UpdateTodoRequest {
+export interface UpdateEntryRequest {
   name: string
-  dueDate: string
+  entryDate: string
   done: boolean
 }
